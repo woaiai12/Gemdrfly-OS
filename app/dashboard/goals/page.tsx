@@ -32,6 +32,7 @@ import {
   updateGoalStatus,
 } from "@/lib/firestore";
 import { mockFirestore, mockGoals } from "@/lib/mockData";
+import { GoalListSkeleton } from "@/components/skeletons/GoalListSkeleton";
 
 const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
@@ -158,7 +159,7 @@ export default function GoalsPage() {
   };
 
   if (loading) {
-    return <div className="text-center py-12">加载中...</div>;
+    return <GoalListSkeleton />;
   }
 
   return (

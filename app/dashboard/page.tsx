@@ -9,6 +9,7 @@ import { getStartGuidance } from "@/lib/guidance";
 import { Task } from "@/lib/types";
 import { getUserProgressStats } from "@/lib/firestore";
 import { mockFirestore, mockTasks, mockProgressStats } from "@/lib/mockData";
+import { TaskListSkeleton } from "@/components/skeletons/TaskListSkeleton";
 
 const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
@@ -124,11 +125,7 @@ export default function DashboardPage() {
   const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <Spin size="large" />
-      </div>
-    );
+    return <TaskListSkeleton />;
   }
 
   return (

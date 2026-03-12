@@ -1,6 +1,6 @@
 "use client";
 
-import { Layout, Menu, Button, Avatar, Dropdown } from "antd";
+import { Layout, Menu, Button, Avatar, Dropdown, Spin } from "antd";
 import {
   HomeOutlined,
   AimOutlined,
@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { FullScreenLoader } from "@/components/FullScreenLoader";
+import { useState, useEffect } from "react";
 
 const { Header, Content, Sider } = Layout;
 
@@ -21,9 +23,19 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
+  const [initialLoading, setInitialLoading] = useState(true);
+
+  useEffect(() => {
+    // 初始加载动画
+    const timer = setTimeout(() => {
+      setInitialLoading(false);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleLogout = async () => {
     await logout();
@@ -62,6 +74,10 @@ export default function DashboardLayout({
       onClick: handleLogout,
     },
   ];
+
+  if (initialLoading || loading) {
+    return <FullScreenLoader />;
+  }
 
   return (
     <Layout className="min-h-screen transition-colors duration-300">

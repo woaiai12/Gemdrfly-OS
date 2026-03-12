@@ -16,6 +16,8 @@ import { mockProgressStats } from "@/lib/mockData";
 import { CompletionTrendChart } from "@/components/CompletionTrendChart";
 import { GoalProgressChart } from "@/components/GoalProgressChart";
 import { ActivityHeatmap } from "@/components/ActivityHeatmap";
+import { StatCardSkeleton } from "@/components/skeletons/StatCardSkeleton";
+import { ChartSkeleton } from "@/components/skeletons/ChartSkeleton";
 
 const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
@@ -78,8 +80,28 @@ export default function ProgressPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <Spin size="large" />
+      <div>
+        <h2 className="text-2xl font-bold mb-6">成长进度</h2>
+        <Row gutter={[16, 16]} className="mb-8">
+          {[...Array(4)].map((_, i) => (
+            <Col xs={24} sm={12} md={6} key={i}>
+              <StatCardSkeleton />
+            </Col>
+          ))}
+        </Row>
+        <Row gutter={[16, 16]} className="mb-8">
+          <Col xs={24} lg={16}>
+            <ChartSkeleton title="近7天完成趋势" />
+          </Col>
+          <Col xs={24} lg={8}>
+            <ChartSkeleton title="目标进度分布" />
+          </Col>
+        </Row>
+        <Row gutter={[16, 16]} className="mb-8">
+          <Col xs={24}>
+            <ChartSkeleton title="活动热力图" />
+          </Col>
+        </Row>
       </div>
     );
   }
