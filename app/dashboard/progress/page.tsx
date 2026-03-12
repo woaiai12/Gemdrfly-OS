@@ -9,14 +9,19 @@ import {
   AimOutlined,
 } from "@ant-design/icons";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNotification } from "@/contexts/NotificationContext";
 import { getUserProgressStats } from "@/lib/firestore";
 import { ProgressStats } from "@/lib/types";
 import { mockProgressStats } from "@/lib/mockData";
+import { CompletionTrendChart } from "@/components/CompletionTrendChart";
+import { GoalProgressChart } from "@/components/GoalProgressChart";
+import { ActivityHeatmap } from "@/components/ActivityHeatmap";
 
 const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
 export default function ProgressPage() {
   const { currentUser } = useAuth();
+  const { addNotification } = useNotification();
   const [stats, setStats] = useState<ProgressStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +36,7 @@ export default function ProgressPage() {
       // 演示模式：使用模拟数据
       setStats(mockProgressStats);
       setLoading(false);
+      addNotification("success", "数据已加载！");
       return;
     }
 
@@ -53,6 +59,7 @@ export default function ProgressPage() {
 
       clearTimeout(timeoutId);
       setStats(userStats);
+      addNotification("success", "数据已同步！");
     } catch (error) {
       console.error("加载统计数据失败:", error);
       setStats({
@@ -63,6 +70,7 @@ export default function ProgressPage() {
         activeGoals: 0,
         goalProgress: []
       });
+      addNotification("error", "数据加载失败");
     } finally {
       setLoading(false);
     }
@@ -79,6 +87,43 @@ export default function ProgressPage() {
   if (!stats) {
     return <Empty description="无法加载统计数据" />;
   }
+
+  // 生成图表数据
+  const generateTrendData = () => {
+    const data = [];
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      data.push({
+        date: `${date.getMonth() + 1}/${date.getDate()}`,
+        completed: Math.floor(Math.random() * 10) + 1,
+        total: Math.floor(Math.random() * 5) + 5,
+      });
+    }
+    return data;
+  };
+
+  const generateGoalProgressData = () => {
+    if (stats.goalProgress.length === 0) return [];
+    return stats.goalProgress.map((goal) => ({
+      name: goal.goalTitle,
+      value: goal.progress,
+      color: ["#4f46e5", "#06b6d4", "#10b981", "#f59e0b", "#ef4444"][Math.floor(Math.random() * 5)],
+    }));
+  };
+
+  const generateHeatmapData = () => {
+    const data = [];
+    for (let i = 28; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      data.push({
+        date: `${date.getMonth() + 1}/${date.getDate()}`,
+        count: Math.floor(Math.random() * 10),
+      });
+    }
+    return data;
+  };
 
   return (
     <div>
@@ -129,6 +174,22 @@ export default function ProgressPage() {
               valueStyle={{ color: "#1890ff" }}
             />
           </Card>
+        </Col>
+      </Row>
+
+      {/* 数据可视化图表 */}
+      <Row gutter={[16, 16]} className="mb-8">
+        <Col xs={24} lg={16}>
+          <CompletionTrendChart data={generateTrendData()} />
+        </Col>
+        <Col xs={24} lg={8}>
+          <GoalProgressChart data={generateGoalProgressData()} />
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]} className="mb-8">
+        <Col xs={24}>
+          <ActivityHeatmap data={generateHeatmapData()} />
         </Col>
       </Row>
 

@@ -5,6 +5,8 @@ import { ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { NotificationProvider } from "@/contexts/NotificationContext";
+import { NotificationToast } from "@/components/NotificationToast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,11 +23,14 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider>
-          <ConfigProvider locale={zhCN}>
-            {children}
-          </ConfigProvider>
-        </ThemeProvider>
+        <NotificationProvider>
+          <ThemeProvider>
+            <ConfigProvider locale={zhCN}>
+              {children}
+              <NotificationToast />
+            </ConfigProvider>
+          </ThemeProvider>
+        </NotificationProvider>
       </body>
     </html>
   );
