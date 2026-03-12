@@ -1,0 +1,35 @@
+{
+  "name": "Gemdrfly OS - AI驱动的行为操作系统",
+  "short_name": "Gemdrfly OS",
+  "description": "帮助用户持续行动，而不是消耗意志力",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "lifestyle"],
+  "shortcuts": [
+    {
+      "name": "今日任务",
+      "short_name": "任务",
+      "description": "查看今日任务",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "我的目标",
+      "short_name": "目标",
+      "description": "管理个人目标",
+      "url": "/dashboard/goals",
+      "icons": [{ "src": "/icon.svg", "sizes": "any" }]
+    }
+  ]
+}
