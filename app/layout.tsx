@@ -4,6 +4,7 @@ import "./globals.css";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +19,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh-CN">
+    <html lang="zh-CN" suppressHydrationWarning>
       <body className={inter.className}>
-        <AuthProvider>
+        <ThemeProvider>
           <ConfigProvider locale={zhCN}>
             {children}
           </ConfigProvider>
-        </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

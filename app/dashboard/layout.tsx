@@ -12,6 +12,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const { Header, Content, Sider } = Layout;
 
@@ -63,52 +64,54 @@ export default function DashboardLayout({
   ];
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout className="min-h-screen transition-colors duration-300">
       <Sider
         breakpoint="lg"
         collapsedWidth="0"
+        className="bg-white dark:bg-gray-900 dark:border-r dark:border-gray-800 transition-colors duration-300"
         style={{
           background: "#fff",
-          borderRight: "1px solid #f0f0f0",
         }}
       >
         <div className="p-6 text-center">
-          <h1 className="text-2xl font-bold text-blue-600">Gemdrfly OS</h1>
+          <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+            Gemdrfly OS
+          </h1>
         </div>
         <Menu
           mode="inline"
           selectedKeys={[pathname]}
           items={menuItems}
           style={{ borderRight: 0 }}
+          className="bg-white dark:bg-gray-900"
         />
       </Sider>
-      <Layout>
+      <Layout className="transition-colors duration-300">
         <Header
+          className="px-6 bg-white dark:bg-gray-900 dark:border-b dark:border-gray-800 transition-colors duration-300 flex justify-between items-center"
           style={{
             padding: "0 24px",
             background: "#fff",
-            borderBottom: "1px solid #f0f0f0",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
           }}
         >
           <div></div>
-          <Dropdown
-            menu={{
-              items: userMenuItems,
-            }}
-            placement="bottomRight"
-          >
-            <Button type="text" icon={<Avatar icon={<UserOutlined />} />}>
-              {currentUser?.email}
-            </Button>
-          </Dropdown>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Dropdown
+              menu={{
+                items: userMenuItems,
+              }}
+              placement="bottomRight"
+            >
+              <Button type="text" icon={<Avatar icon={<UserOutlined />} />}>
+                {currentUser?.email}
+              </Button>
+            </Dropdown>
+          </div>
         </Header>
         <Content
+          className="m-4 mx-6 p-6 bg-white dark:bg-gray-900 rounded-lg transition-colors duration-300"
           style={{
-            margin: "24px 16px",
-            padding: 24,
             background: "#fff",
             borderRadius: 8,
           }}

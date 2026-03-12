@@ -7,6 +7,9 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+// 禁用静态生成，使用动态渲染
+export const dynamic = 'force-dynamic';
+
 type FieldType = {
   email: string;
   password: string;
@@ -63,13 +66,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 px-4">
-      <Card className="w-full max-w-md shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 px-4 transition-colors duration-300">
+      <Card className="w-full max-w-md shadow-lg bg-white dark:bg-gray-800 transition-colors duration-300">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
             欢迎回来
           </h1>
-          <p className="text-gray-600">登录到Gemdrfly OS</p>
+          <p className="text-gray-600 dark:text-gray-400">登录到Gemdrfly OS</p>
         </div>
 
         <Button
@@ -132,9 +135,9 @@ export default function LoginPage() {
           </Form.Item>
         </Form>
 
-        <div className="text-center text-sm text-gray-600 mt-4">
+        <div className="text-center text-sm text-gray-600 dark:text-gray-400 mt-4">
           还没有账号？{" "}
-          <Link href="/signup" className="text-blue-600 hover:text-blue-700">
+          <Link href="/signup" className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
             立即注册
           </Link>
         </div>
