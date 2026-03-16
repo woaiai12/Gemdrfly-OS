@@ -15,6 +15,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, googleProvider } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { mockUser } from "@/lib/mockData";
+import logger from "@/lib/logger";
 
 const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
 
@@ -64,10 +65,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setCurrentUser(user);
         setLoading(false);
         clearTimeout(timeoutId);
+        logger.info("Auth state changed", { user: user?.email || "none" });
       }
     }, (error) => {
       if (mounted) {
-        console.error("Auth error:", error);
+        logger.error("Auth error", error, { location: "onAuthStateChanged" });
         setCurrentUser(null);
         setLoading(false);
         clearTimeout(timeoutId);

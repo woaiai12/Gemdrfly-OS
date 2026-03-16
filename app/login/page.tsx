@@ -111,7 +111,14 @@ export default function LoginPage() {
           </Form.Item>
 
           <Form.Item<FieldType>
-            label="密码"
+            label={
+              <div className="flex justify-between items-center w-full">
+                <span>密码</span>
+                <Link href="/reset-password" className="text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400">
+                  忘记密码？
+                </Link>
+              </div>
+            }
             name="password"
             rules={[{ required: true, message: "请输入密码" }]}
           >
